@@ -1,0 +1,69 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="coming-soon">
+        <h1>ÇOK YAKINDA</h1>
+        <p>0g 0s 0d 0s</p>
+    </div>
+
+    <div class="get-notified">
+
+        <form action="" method="POST" >
+            {% csrf_token %}
+            
+            <label for="input">Sitemiz açıldığında ilk siz öğrenin.</label>
+            <div class="input-field">
+                {{form}}
+                <button type="submit">Gönder</button>
+            </div>
+
+
+        </form>
+
+    </div>
+    
+    <div class=" {% if mailList.status == 'success' %}success{% elif mailList.status == 'error' %} error {% else %}hidden{% endif %} ">
+        
+        {% if mailList.status == 'success' %}
+            sitemiz açıldığında {{ mailList.email }} adresine mail atacağız. 
+        {% elif mailList.status == 'error' %}
+            {{mailList.invalid_mail}} geçerli bir email değil.
+        {% endif %}
+
+
+    </div>
+
+    
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<!-- default content text (typically empty)                 <input type="email" name="email" placeholder="E-posta adresinizi girin." autocomplete="off">
+                <button type="submit">Gönder</button>  -->
+
+    <script>
+        const date = new Date('2024-05-27T23:59:59').getTime();
+        const p = document.querySelector('.coming-soon p');
+
+        function countdown() {
+            const now = new Date().getTime();
+            const remaining = date - now;
+
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60) / (1000 * 60)));
+            const seconds = Math.floor((remaining % (1000 * 60) / 1000));
+
+            p.innerHTML = days + 'g ' + hours + 's ' + minutes + 'd ' + seconds + 's';
+        }
+
+        countdown();
+        setInterval(countdown, 1000);
+    </script>
+{% endblock %}
